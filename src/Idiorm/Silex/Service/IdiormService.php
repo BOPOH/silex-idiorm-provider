@@ -1,6 +1,6 @@
 <?php
 
-namespace Arseniew\Silex\Service;
+namespace Idiorm\Silex\Service;
 
 class IdiormService
 {

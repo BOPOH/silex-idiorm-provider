@@ -1,6 +1,6 @@
 <?php
 
-namespace Arseniew\Silex\Application;
+namespace Idiorm\Silex\Application;
 
 /**
  * Idiorm trait.

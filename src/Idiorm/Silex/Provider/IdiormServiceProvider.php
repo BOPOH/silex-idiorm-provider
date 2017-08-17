@@ -6,14 +6,15 @@
  * @author Marcin Batkowski <arseniew@gmail.com>
  */
 
-namespace Arseniew\Silex\Provider;
+namespace Idiorm\Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Arseniew\Silex\Service\IdiormService;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 class IdiormServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['idiorm.dbs.options.initializer'] = $app->protect(function () use ($app) {
             static $initialized = false;
@@ -46,29 +47,26 @@ class IdiormServiceProvider implements ServiceProviderInterface
 
         });
 
-        $app['idiorm.dbs'] = $app->share(function ($app) {
+        $app['idiorm.dbs'] = function($app) {
             $app['idiorm.dbs.options.initializer']();
-            $dbs = new \Pimple();
+            $dbs = new Container();
 
             // Configuration is already set, so we just need keys to return connection
             foreach (array_keys($app['idiorm.dbs.options']) as $connectionName) {
-                $dbs[$connectionName] = $dbs->share(function () use ($connectionName) {
-                    return new \Arseniew\Silex\Service\IdiormService($connectionName);
-                });
+                $dbs[$connectionName] = function() use ($connectionName) {
+                    return new \Idiorm\Silex\Service\IdiormService($connectionName);
+                };
             }
 
             return $dbs;
-        });
+        };
 
-        $app['idiorm.db'] = $app->share(function ($app) {
+        $app['idiorm.db'] = function($app) {
             $dbs = $app['idiorm.dbs'];
 
             return $dbs[$app['idiorm.dbs.default']];
-        });
+        };
 
     }
 
-    public function boot(Application $app)
-    {
-    }
 }
