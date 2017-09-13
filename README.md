@@ -5,15 +5,18 @@ Provider for integrating [Idiorm](https://github.com/j4mie/idiorm) with [Silex](
 #### Registering and configuration
 
 ```php
-$app->register(new \Idiorm\Silex\Provider\IdiormServiceProvider(), array(
+$app->register(
+    new \Idiorm\Silex\Provider\IdiormServiceProvider(),
+    array(
         'idiorm.db.options' => array(
             'connection_string' => 'mysql:host=localhost;dbname=my_db',
             'username' => 'my_username',
             'password' => 'my_password',
-			'id_column_overrides' => array(
-				'table' =>  'primarykey'
-			)
-        )
+            'id_column_overrides' => array(
+                'table' =>  'primarykey',
+            ),
+        ),
+    )
 );
 ```
 
@@ -46,7 +49,7 @@ $app['idiorm.dbs.options'] = array(
 );
 ```
 
-$app['idiorm.dbs.options'] Needs to be associative array, where keys will be connection names, and value will contain configuration array
+$app['idiorm.dbs.options'] needs to be associative array, where keys will be connection names, and value will contain configuration array
 
 To use connections in controller:
 ```php
