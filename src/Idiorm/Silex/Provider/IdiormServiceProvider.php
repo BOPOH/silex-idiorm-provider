@@ -26,7 +26,9 @@ class IdiormServiceProvider implements ServiceProviderInterface
             $initialized = true;
 
             if (!isset($app['idiorm.dbs.options'])) {
-                $app['idiorm.dbs.options'] = array('default' => isset($app['idiorm.db.options']) ? $app['idiorm.db.options'] : array());
+                $app['idiorm.dbs.options'] = [
+                    'default' => isset($app['idiorm.db.options']) ? $app['idiorm.db.options'] : [],
+                ];
             }
 
             // If default configuration was not found, setting first one from idiorm.dbs as such
@@ -42,9 +44,7 @@ class IdiormServiceProvider implements ServiceProviderInterface
                     \ORM::configure($options);
                 }
                 \ORM::configure($options, null, $name);
-
             }
-
         });
 
         $app['idiorm.dbs'] = function($app) {
@@ -66,7 +66,5 @@ class IdiormServiceProvider implements ServiceProviderInterface
 
             return $dbs[$app['idiorm.dbs.default']];
         };
-
     }
-
 }

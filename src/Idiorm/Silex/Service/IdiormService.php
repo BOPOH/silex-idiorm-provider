@@ -46,5 +46,4 @@ class IdiormService
     {
         return \ORM::clear_cache();
     }
-
 }
